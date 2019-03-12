@@ -17,7 +17,7 @@ li{
         height: 700px;
     }
 
-    div{
+    div.heading-container{
         margin-top: 10%;
         margin-left: 5%;
     }
@@ -30,7 +30,12 @@ li{
     }
 
     div.btn-flex-container{
+        margin-top: 20%;
+        height: 250px;
         display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-end;
     }
 
     button.click-to-start-btn{ 
@@ -69,6 +74,21 @@ li{
         margin: 15px;
         padding: 20px;
         border-radius: 2%;
+    }
+
+    .next-ques-btn-container{
+        display: flex;
+        justify-content: center;
+    }
+
+    .next-question{
+        border-radius: 8%;
+        background-color: #ff3823;
+        color: #fff;
+        padding: 12px 30px;
+        font-weight: 600;
+        font-size: 20px;
+        border: 0;
     }
 
 }
