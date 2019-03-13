@@ -53,7 +53,25 @@ const quizQuesAndAnsArray = [
     }
     ];
 
-    //JS functions
+    let count = 0; //This is a counter that acts as the index of the arr
+
+    //JS Render functions
+
+    function generateLandingPage(){
+        return `
+        <section class="landing-page">
+        <div class="heading-container">
+            <h2 class="starting-heading">Are you a <br> <strong>Star Wars</strong><br> Junkie? <br> Let's Find Out!</h2>
+        </div>
+    </section>
+    <div class="btn-flex-container">
+        <div>
+            <button type="submit" class="click-to-start-btn">Let's Start!</button>
+        </div>
+    </div>
+        `
+    }
+
 
     function generateQuizSection(obj){
         return `
@@ -83,57 +101,66 @@ const quizQuesAndAnsArray = [
     `
     }
 
-    
-
     function renderList(){
         console.log("ran Render List function");
-        $("body").html(clickToStartGame());
+        $("body").html(generateQuizSection(quizQuesAndAnsArray[count]));
+        questionCount();
     }
-
+ 
     function clickToStartGame(){
         console.log("ran 'clickToStartGame' function");
         //This function will run only the very first time
         $("button.click-to-start-btn").on("click",function(){
             $(".landing-page, .btn-flex-container").hide();
-            $("body").html(generateQuizSection(quizQuesAndAnsArray[0]));
+            $("body").html(generateQuizSection(quizQuesAndAnsArray[count]));
+            questionCount();
         })
-    }
+    } 
 
-    function checkAnswer(){
+    //********* */JS LOGIC FUNCTIONS**********
+
+
+    function checkAnswer(obj){
         //This function should allow user to click on the li items and then get feedback based on their choices
-        
-
-    }
-
-    function countScore(){
-        let currentScoreValue = parseInt($("span.current-score").html());
-        let newScore = currentScoreValue += 1;
-        return newScore;
-    }
+        console.log("CheckAnswer function Ran");
+        // if (obj.answer ===/*function to check list value*/){
+        //     correctChoice();
+        // }
+        // else {
+        //     wrongChoice();
+        // }
+    };
 
     function updateScore(){
-        //This function will count the score based on the correct choices
-        //On click of the li item if the clicked li === answer
-        //score++;
+        let currentScoreValue = parseInt($("span.current-score").html());
+        let newScore = currentScoreValue += 1;
+        $("span.current-score").html(newScore);
     }
 
-    function questionCount (){
+    function questionCount(){
          //This function will count the current question
          let currentQuestionValue = parseInt($("span.current-question").html());
          $("button.next-question").on("click", function(){
-             currentQuestionValue += 1;
-             if(currentQuestionValue <= 10){
-                $("span.current-question").html(currentQuestionValue);
+             count += 1;
+             if(count < 10){
+                renderList();
+                $("span.current-question").html(count+1);
+             } else {
+                 restartGame();
              }
          });
     }
 
-    function wrongChoice(){
+    //********* Some JS Helper Functions*****************
 
+    function wrongChoice(){
+        alert(`Damn! This is not the correct answer. It's ${quizQuesAndAnsArray[count].answer}.`)
     }
 
     function correctChoice(){
-        
+        alert("You are absolutely correct!!");
+        updateScore();
+
     }
 
     function finalScore (){
@@ -141,9 +168,12 @@ const quizQuesAndAnsArray = [
     }
 
     function restartGame(){
-
+        alert("play again?");
+        count = 0;
+        $(".question-score-count-section,.options-list,.next-ques-btn-container,.question-section").hide();
+        $("body").html(generateLandingPage());
+        clickToStartGame();
     }
-
 
 
 //Ready State
@@ -151,7 +181,8 @@ const quizQuesAndAnsArray = [
         clickToStartGame();
         questionCount();
         updateScore();
-        renderList();
+        // renderList();
+        checkAnswer();
     }
 
     $(runAllFunctions);
