@@ -8,7 +8,7 @@ const quizQuesAndAnsArray = [
     },
     {
     question: "In 'Attack of the Clones', who says 'Oh, not good'?",
-    options: ["Anakin Skywalker", "Luke Skywalker", "Obi Wan Kenobi", "R2-D2"],
+    options: ["Anakin Skywalker","Luke Skywalker","Obi Wan Kenobi","R2-D2"],
     answer: "Obi Wan Kenobi"
     },
     {
@@ -23,8 +23,8 @@ const quizQuesAndAnsArray = [
     },
     {
     question: "How many actors hold the distinction of being credited in all six movies?",
-    options: [1, 2, 3, 4],
-    answer: 2
+    options: ["1", "2", "3", "4"],
+    answer: "2"
     },
     {
     question: "Which planet is Princess Leia from?",
@@ -54,7 +54,7 @@ const quizQuesAndAnsArray = [
     ];
 
     let count = 0; //This is a counter that acts as the index of the arr
-
+    let currentScore = 0;
     //JS Render functions
 
     function generateLandingPage(){
@@ -86,9 +86,9 @@ const quizQuesAndAnsArray = [
 
     <section class="options-list">   
         <ul class="options-ul">
-            <li class="option-1">${obj.options[0]} </li>
+            <li class="option-1">${obj.options[0]}</li>
             <li class="option-2">${obj.options[1]}</li>
-            <li class="option-3"> ${obj.options[2]} </li>
+            <li class="option-3">${obj.options[2]}</li>
             <li class="option-4">${obj.options[3]}</li>
         </ul>
     </section>
@@ -101,10 +101,24 @@ const quizQuesAndAnsArray = [
     `
     }
 
+    function generateFinalScore (){
+        return `
+        <section class="final-score-display">
+        <div class="final-score-container">
+           <h2>Thanks for playing. Your final score is ${currentScore} </h2>
+        </div>
+        <div class="play-again-container">
+           <button class="play-again-btn">Play Again?</button>
+        </div>
+   </section>
+        `
+    }
+
     function renderList(){
         console.log("ran Render List function");
         $("body").html(generateQuizSection(quizQuesAndAnsArray[count]));
         questionCount();
+        selectListItems();
     }
  
     function clickToStartGame(){
@@ -114,37 +128,22 @@ const quizQuesAndAnsArray = [
             $(".landing-page, .btn-flex-container").hide();
             $("body").html(generateQuizSection(quizQuesAndAnsArray[count]));
             questionCount();
+            selectListItems();
         })
     } 
 
     //********* */JS LOGIC FUNCTIONS**********
 
 
-    function checkAnswer(obj){
-        //This function should allow user to click on the li items and then get feedback based on their choices
-        console.log("CheckAnswer function Ran");
-        // if (obj.answer ===/*function to check list value*/){
-        //     correctChoice();
-        // }
-        // else {
-        //     wrongChoice();
-        // }
-    };
-
-    function updateScore(){
-        let currentScoreValue = parseInt($("span.current-score").html());
-        let newScore = currentScoreValue += 1;
-        $("span.current-score").html(newScore);
-    }
-
     function questionCount(){
          //This function will count the current question
          let currentQuestionValue = parseInt($("span.current-question").html());
          $("button.next-question").on("click", function(){
              count += 1;
-             if(count < 10){
+             if(count < quizQuesAndAnsArray.length){
                 renderList();
                 $("span.current-question").html(count+1);
+                $("span.current-score").html(currentScore);
              } else {
                  restartGame();
              }
@@ -153,36 +152,52 @@ const quizQuesAndAnsArray = [
 
     //********* Some JS Helper Functions*****************
 
+    function selectListItems(){
+        $("li").on("click",function(e){
+            e.stopPropagation();
+            let val =$(this).text();
+            let correctAnswer = quizQuesAndAnsArray[count].answer;
+            if(val === correctAnswer){
+                currentScore += 1;
+                $("span.current-score").html(currentScore);
+                correctChoice();
+            }
+            else {
+                wrongChoice();
+            }
+        })
+    }
+
     function wrongChoice(){
         alert(`Damn! This is not the correct answer. It's ${quizQuesAndAnsArray[count].answer}.`)
     }
 
     function correctChoice(){
         alert("You are absolutely correct!!");
-        updateScore();
-
-    }
-
-    function finalScore (){
-
     }
 
     function restartGame(){
-        alert("play again?");
-        count = 0;
-        $(".question-score-count-section,.options-list,.next-ques-btn-container,.question-section").hide();
-        $("body").html(generateLandingPage());
-        clickToStartGame();
+        $("body").html(generateFinalScore());
+        $(".play-again-btn").on("click", function(){
+            count = 0;
+            currentScore = 0;
+            $(".question-score-count-section,.options-list,.next-ques-btn-container,.question-section").hide();
+            $("body").html(generateLandingPage());
+            clickToStartGame();
+        }) 
     }
 
 
 //Ready State
+
     function runAllFunctions(){
         clickToStartGame();
         questionCount();
-        updateScore();
-        // renderList();
-        checkAnswer();
+        selectListItems();
     }
 
     $(runAllFunctions);
+
+
+    
+    

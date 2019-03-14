@@ -91,4 +91,28 @@ li{
         border: 0;
     }
 
+    .final-score-container{
+        margin-top: 60%;
+        width: 99.9%;
+        height: 100px;
+        background-color: rgba(255,255,255,0.3);
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .play-again-container{
+        display: flex;
+        justify-content: center;
+    }
+
+    .play-again-btn{
+        border-radius: 8%;
+        background-color: #ff3823;
+        color: #fff;
+        padding: 12px 30px;
+        font-weight: 600;
+        font-size: 20px;
+        border: 0;
+    }
 }
