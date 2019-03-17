@@ -1,5 +1,7 @@
 'use strict'
 
+//Data Model
+
 const quizQuesAndAnsArray = [
     {
     question: "In 'Episode I,' what did Yoda discover that Anakin possessed, that may lead him to the Dark Side?",
