@@ -55,7 +55,9 @@ const quizQuesAndAnsArray = [
 
     let count = 0; //This is a counter that acts as the index of the arr
     let currentScore = 0;
-    //JS Render functions
+
+
+    //************* */JS Render functions*******************
 
     function generateLandingPage(){
         return `
@@ -105,7 +107,7 @@ const quizQuesAndAnsArray = [
         return `
         <section class="final-score-display">
         <div class="final-score-container">
-           <h2>Thanks for playing. Your final score is ${currentScore} </h2>
+           <h2> Darth Vader thanks you for playing. <br> <br> Your final score is ${currentScore} </h2>
         </div>
         <div class="play-again-container">
            <button class="play-again-btn">Play Again?</button>
@@ -113,6 +115,8 @@ const quizQuesAndAnsArray = [
    </section>
         `
     }
+
+    //**************************JS Controlling Functions******************************** */
 
     function renderList(){
         console.log("ran Render List function");
@@ -132,9 +136,7 @@ const quizQuesAndAnsArray = [
         })
     } 
 
-    //********* */JS LOGIC FUNCTIONS**********
-
-
+    
     function questionCount(){
          //This function will count the current question
          let currentQuestionValue = parseInt($("span.current-question").html());
@@ -150,7 +152,12 @@ const quizQuesAndAnsArray = [
          });
     }
 
-    //********* Some JS Helper Functions*****************
+    //********* JS Helper Functions*****************
+
+    function disableLiAfterClick(){
+        $("li").css("pointer-events","none");
+        $("li").css("opacity", 0.5);
+    }
 
     function selectListItems(){
         $("li").on("click",function(e){
@@ -161,9 +168,11 @@ const quizQuesAndAnsArray = [
                 currentScore += 1;
                 $("span.current-score").html(currentScore);
                 correctChoice();
+                disableLiAfterClick();
             }
             else {
                 wrongChoice();
+                disableLiAfterClick();
             }
         })
     }
