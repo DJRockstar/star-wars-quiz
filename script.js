@@ -5,7 +5,7 @@
 const quizQuesAndAnsArray = [
     {
     question: "In 'Episode I,' what did Yoda discover that Anakin possessed, that may lead him to the Dark Side?",
-    options: ["Fear","Strenth","Trust","Passion"],
+    options: ["Fear","Strength","Trust","Passion"],
     answer: "Fear"
     },
     {
