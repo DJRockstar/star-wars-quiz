@@ -170,12 +170,11 @@ const quizQuesAndAnsArray = [
                 currentScore += 1;
                 $("span.current-score").html(currentScore);
                 correctChoice();
-                disableLiAfterClick();
             }
             else {
-                wrongChoice();
-                disableLiAfterClick();
+                wrongChoice();       
             }
+            disableLiAfterClick();
         })
     }
 
