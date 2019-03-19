@@ -79,30 +79,64 @@ const quizQuesAndAnsArray = [
 
     function generateQuizSection(obj){
         return `
-    <section class="question-score-count-section">
-        <h3 class="question-count">Question <span class="current-question">1</span> of <span class="total-questions">10</span></h3>
-        <h3 class="score-count">Score <span class="current-score">0</span> of <span class="tot-score">10</span></h3>
-    </section>
+        <form class="quesAndAnsForm" action ="#someServerEndPoint" method = "POST">
+            <section class="question-score-count-section">
+                <h3 class="question-count">Question <span class="current-question">1</span> of <span class="total-questions">10</span></h3>
+                <h3 class="score-count">Score <span class="current-score">0</span> of <span class="tot-score">10</span></h3>
+            </section>
 
-    <section class="question-section">
-        <h3 class="question">${obj.question}</h3>
-    </section>
+            <section class="question-section">
+                <h3 class="question">${obj.question}</h3>
+            </section>
 
-    <section class="options-list">   
-        <ul class="options-ul">
-            <li class="option-1">${obj.options[0]}</li>
-            <li class="option-2">${obj.options[1]}</li>
-            <li class="option-3">${obj.options[2]}</li>
-            <li class="option-4">${obj.options[3]}</li>
-        </ul>
-    </section>
+            <section class="options-list">   
+                <ul class="options-ul">
+                    <li tabindex = 1 class="option-1">${obj.options[0]}</li>
+                    <li tabindex = 2 class="option-2">${obj.options[1]}</li>
+                    <li tabindex = 3 class="option-3">${obj.options[2]}</li>
+                    <li tabindex = 4 class="option-4">${obj.options[3]}</li>
+                </ul>
+            </section>
 
-    <section>
+            <section>
+                <div class="next-ques-btn-container">
+                    <button class="next-question" type="submit">Next</button>
+                </div>
+            </section>
+        </form>    
+    `
+    }
+
+    function correctChoiceRender(){
+        return `
+            <section class="rightOrWrongAnswer">
+            <div class="giphy-embed1">
+                <h2 class="correct-heading">Absolutely Correct!</h2>
+                <iframe src="https://giphy.com/embed/1HPUSulSOHDpe" width="480" height="247" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/darth-vader-dancing-star-wars-1HPUSulSOHDpe"></a></p>
+            </div>
+            </section>
+            <section>
+            <div class="next-ques-btn-container">
+                <button class="next-question" type="submit">Next</button>
+            </div>
+        </section>
+            `
+    }
+
+    function wrongChoiceRender(){
+        return `
+        <section class="rightOrWrongAnswer">
+        <div class="giphy-embed1">
+            <h2 class="incorrect-heading">Unfortunately, it's not Correct! It's ${quizQuesAndAnsArray[count].answer}</h2>
+            <iframe src="https://giphy.com/embed/zZfNOVP35Nrkk" width="480" height="207" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/i-then-zZfNOVP35Nrkk"></a></p>
+        </div>
+        </section>
+        <section>
         <div class="next-ques-btn-container">
             <button class="next-question" type="submit">Next</button>
         </div>
-    </section>
-    `
+        </section>
+        `
     }
 
     function generateFinalScore (){
@@ -137,7 +171,6 @@ const quizQuesAndAnsArray = [
             selectListItems();
         })
     } 
-
     
     function questionCount(){
          //This function will count the current question
@@ -161,6 +194,11 @@ const quizQuesAndAnsArray = [
         $("li").css("opacity", 0.5);
     }
 
+    function enableNextButtonOnClick(){
+        $("button.next-question").css("pointer-events", "visible");
+        $("button.next-question").css("opacity", 1);
+    }
+
     function selectListItems(){
         $("li").on("click",function(e){
             e.stopPropagation();
@@ -175,15 +213,35 @@ const quizQuesAndAnsArray = [
                 wrongChoice();       
             }
             disableLiAfterClick();
-        })
+            enableNextButtonOnClick();
+        });
+        
+        $("li").on("keypress",function(e){
+            if(e.which===13){
+                let val =$(this).text();
+                let correctAnswer = quizQuesAndAnsArray[count].answer;
+                if(val === correctAnswer){
+                    currentScore += 1;
+                    $("span.current-score").html(currentScore);
+                    correctChoice();
+                }
+                else {
+                    wrongChoice();       
+                }
+                disableLiAfterClick();
+                enableNextButtonOnClick();
+                }
+        });
     }
 
     function wrongChoice(){
-        alert(`Damn! This is not the correct answer. It's ${quizQuesAndAnsArray[count].answer}.`)
+        $("body").html(wrongChoiceRender());
+        questionCount();
     }
 
     function correctChoice(){
-        alert("You are absolutely correct!!");
+        $("body").html(correctChoiceRender());
+        questionCount();
     }
 
     function restartGame(){
