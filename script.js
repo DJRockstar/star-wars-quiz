@@ -64,46 +64,57 @@ const quizQuesAndAnsArray = [
     function generateLandingPage(){
         return `
         <section class="landing-page">
-        <div class="heading-container">
-            <h2 class="starting-heading">Are you a <br> <strong>Star Wars</strong><br> Junkie? <br> Let's Find Out!</h2>
+            <div class="heading-container">
+                <h2 class="starting-heading">Are you a <br> <strong>Star Wars</strong><br> Junkie? <br> Let's Find Out!</h2>
+            </div>
+        </section>
+        <div class="btn-flex-container">
+            <div>
+               <button class="click-to-start-btn">Let's Start!</button>
+            </div>
         </div>
-    </section>
-    <div class="btn-flex-container">
-        <div>
-            <button type="submit" class="click-to-start-btn">Let's Start!</button>
-        </div>
-    </div>
         `
     }
 
 
     function generateQuizSection(obj){
         return `
-        <form class="quesAndAnsForm" action ="#someServerEndPoint" method = "POST">
-            <section class="question-score-count-section">
-                <h3 class="question-count">Question <span class="current-question">1</span> of <span class="total-questions">10</span></h3>
-                <h3 class="score-count">Score <span class="current-score">0</span> of <span class="tot-score">10</span></h3>
+        <main role="main">
+            <section class="quesAndAnsForm">
+                <section class="question-score-count-section">
+                    <h3 class="question-count">Question <span class="current-question">1</span> of <span class="total-questions">10</span></h3>
+                    <h3 class="score-count">Score <span class="current-score">0</span> of <span class="tot-score">10</span></h3>
+                </section>
+                <section class="question-section">
+                    <h3 class="question">${obj.question}</h3>
+                </section>
             </section>
-
-            <section class="question-section">
-                <h3 class="question">${obj.question}</h3>
-            </section>
-
-            <section class="options-list">   
-                <ul class="options-ul">
-                    <li tabindex = 1 class="option-1">${obj.options[0]}</li>
-                    <li tabindex = 2 class="option-2">${obj.options[1]}</li>
-                    <li tabindex = 3 class="option-3">${obj.options[2]}</li>
-                    <li tabindex = 4 class="option-4">${obj.options[3]}</li>
-                </ul>
-            </section>
-
-            <section>
-                <div class="next-ques-btn-container">
-                    <button class="next-question" type="submit">Next</button>
-                </div>
-            </section>
-        </form>    
+            <form action="#someServerEndPoint" method="POST">
+                <fieldset class="options-fieldset">
+                    <div class="label-container">
+                        <label tabindex = 1 class="answerOption">
+                            <input  type="radio" value=${obj.options[0]} name="answer" required>
+                            <span class="option-1">${obj.options[0]}</span>
+                        </label>
+                        <label tabindex = 2 class="answerOption">
+                            <input type="radio"  value=${obj.options[1]} name="answer">
+                            <span class="option-2">${obj.options[1]}</span>
+                        </label>
+                        <label tabindex = 3 class="answerOption">
+                            <input type="radio" value=${obj.options[2]} name="answer">
+                            <span class="option-3">${obj.options[2]}</span>
+                        </label>
+                        <label tabindex = 4 class="answerOption">
+                            <input type="radio" value=${obj.options[3]} name="answer">
+                            <span class="option-4">${obj.options[3]}</span>
+                        </label>
+                    </div>
+                    <div class="next-ques-btn-container">
+                        <input class="next-question" type="submit" value="Next">
+                    </div>
+                </fieldset>
+            </form>
+        </main> 
     `
     }
 
@@ -112,7 +123,7 @@ const quizQuesAndAnsArray = [
             <section class="rightOrWrongAnswer">
             <div class="giphy-embed1">
                 <h2 class="correct-heading">Absolutely Correct!</h2>
-                <iframe src="https://giphy.com/embed/1HPUSulSOHDpe" width="480" height="247" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/darth-vader-dancing-star-wars-1HPUSulSOHDpe"></a></p>
+                <iframe src="https://giphy.com/embed/1HPUSulSOHDpe" width="380" height="247" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/darth-vader-dancing-star-wars-1HPUSulSOHDpe"></a></p>
             </div>
             </section>
             <section>
@@ -189,20 +200,10 @@ const quizQuesAndAnsArray = [
 
     //********* JS Helper Functions*****************
 
-    function disableLiAfterClick(){
-        $("li").css("pointer-events","none");
-        $("li").css("opacity", 0.5);
-    }
-
-    function enableNextButtonOnClick(){
-        $("button.next-question").css("pointer-events", "visible");
-        $("button.next-question").css("opacity", 1);
-    }
-
     function selectListItems(){
-        $("li").on("click",function(e){
-            e.stopPropagation();
-            let val =$(this).text();
+        $("form").on("submit",function(e){
+            e.preventDefault();
+            let val = $("input:checked").val();
             let correctAnswer = quizQuesAndAnsArray[count].answer;
             if(val === correctAnswer){
                 currentScore += 1;
@@ -212,25 +213,6 @@ const quizQuesAndAnsArray = [
             else {
                 wrongChoice();       
             }
-            disableLiAfterClick();
-            enableNextButtonOnClick();
-        });
-        
-        $("li").on("keypress",function(e){
-            if(e.which===13){
-                let val =$(this).text();
-                let correctAnswer = quizQuesAndAnsArray[count].answer;
-                if(val === correctAnswer){
-                    currentScore += 1;
-                    $("span.current-score").html(currentScore);
-                    correctChoice();
-                }
-                else {
-                    wrongChoice();       
-                }
-                disableLiAfterClick();
-                enableNextButtonOnClick();
-                }
         });
     }
 
