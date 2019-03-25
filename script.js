@@ -92,20 +92,20 @@ const quizQuesAndAnsArray = [
             <form action="#someServerEndPoint" method="POST">
                 <fieldset class="options-fieldset">
                     <div class="label-container">
-                        <label tabindex = 1 class="answerOption">
-                            <input  type="radio" value=${obj.options[0]} name="answer" required>
+                        <label  class="answerOption">
+                            <input tabindex=1 type="radio" value="${obj.options[0]}" name="answer" required>
                             <span class="option-1">${obj.options[0]}</span>
                         </label>
-                        <label tabindex = 2 class="answerOption">
-                            <input type="radio"  value=${obj.options[1]} name="answer">
+                        <label  class="answerOption">
+                            <input tabindex=2 type="radio"  value="${obj.options[1]}" name="answer">
                             <span class="option-2">${obj.options[1]}</span>
                         </label>
-                        <label tabindex = 3 class="answerOption">
-                            <input type="radio" value=${obj.options[2]} name="answer">
+                        <label class="answerOption">
+                            <input tabindex=3 type="radio" value="${obj.options[2]}" name="answer">
                             <span class="option-3">${obj.options[2]}</span>
                         </label>
-                        <label tabindex = 4 class="answerOption">
-                            <input type="radio" value=${obj.options[3]} name="answer">
+                        <label class="answerOption">
+                            <input tabindex=4  type="radio" value="${obj.options[3]}" name="answer">
                             <span class="option-4">${obj.options[3]}</span>
                         </label>
                     </div>
